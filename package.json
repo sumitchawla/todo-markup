@@ -1,0 +1,10 @@
+{
+    "name": "todo-markup",
+    "title": "Todo Markup",
+    "description": "Todo Markup",
+    "homepage": "https://github.com/sumitchawla/todo-markup",
+    "version": "0.0.1",
+    "author": "Sumit Chawla",
+    "keywords": ["todo-markup"],
+    "license": "MIT"
+}
