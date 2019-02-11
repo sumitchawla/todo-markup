@@ -24,8 +24,14 @@ define(function (require, exports, module) {
     //object of shortcuts
     prefs.definePreference( "shortcuts", "object", {
                                                     CTRL_Z:"New Day!",
-                                                    CTRL_A:"Action Item: 7 Days",
-                                                    CTRL_S:"Action Item: 15 Days",
+                                                    CTRL_N:"Note with Today's Date",
+                                                    CTRL_X:"Done Date",
+                                                    CTRL_1:"Action Item: 7 Days",
+                                                    CTRL_2:"Action Item: 15 Days",
+                                                    CTRL_3:"Action Item: 30 Days",
+                                                    CTRL_SHIFT_1:"Sumit Action Item: 7 Days",
+                                                    CTRL_SHIFT_2:"Sumit Action Item: 15 Days",
+                                                    CTRL_SHIFT_3:"Sumit Action Item: 30 Days"
                                                   },
                             { description: "Add shortcut as Key and what it types as the value (except for html-template)" }
     );
@@ -99,12 +105,25 @@ define(function (require, exports, module) {
         log("got " + shortcut); 
          switch(shortcut){
           case "CTRL_Z": 
-           txt_with_position("\nDiscussed:\n\n",get_date_string(0) + "\n", "\n\nAction Items:\n",true, true);
+             
+           txt_with_position("Attendees:\nCC:\n\nMeeting Notes: (Sumit DUE "+ get_date_string(1) + ")" + "\nDiscussed:\n\n",get_date_string(0) + "\n", "\n\nAction Items:\n",true, true);
            return;
-          case "CTRL_A": 
-           return txt_with_position("*",""," DUE ( "+ get_date_string(7) + ")",true, false);
-          case "CTRL_S": 
-           return txt_with_position("*",""," DUE ( "+ get_date_string(15) + ")",true, false);
+          case "CTRL_N": 
+           return txt_with_position("\t\t-[" +  get_date_string(0) + "]","","",true, true);
+          case "CTRL_X": 
+           return txt_with_position("[Done-" +  get_date_string(0) + "]","","",false, false);
+          case "CTRL_1": 
+           return txt_with_position("\t* (DUE "+ get_date_string(7) + ")","", "",true, false);
+          case "CTRL_2": 
+           return txt_with_position("\t* (DUE "+ get_date_string(15) + ")","",true, false);
+          case "CTRL_3": 
+           return txt_with_position("\t* (DUE "+ get_date_string(30) + ")","", "",true, false);
+          case "CTRL_SHIFT_1": 
+           return txt_with_position("\t* (Sumit DUE "+ get_date_string(7) + ")","","",false, false);
+          case "CTRL_SHIFT_2": 
+           return txt_with_position("\t* (Sumit DUE "+ get_date_string(15) + ")","","",false, false);
+          case "CTRL_SHIFT_3": 
+           return txt_with_position("\t* (Sumit DUE "+ get_date_string(30) + ")","","",false, false);
        }      
     }
     
