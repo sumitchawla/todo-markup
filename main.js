@@ -26,18 +26,24 @@ define(function (require, exports, module) {
                                                     CTRL_Z:"New Day!",
                                                     CTRL_N:"Note with Today's Date",
                                                     CTRL_X:"Done Date",
-                                                    CTRL_1:"Action Item: 7 Days",
-                                                    CTRL_2:"Action Item: 15 Days",
-                                                    CTRL_3:"Action Item: 30 Days",
-                                                    CTRL_SHIFT_1:"Sumit Action Item: 7 Days",
-                                                    CTRL_SHIFT_2:"Sumit Action Item: 15 Days",
-                                                    CTRL_SHIFT_3:"Sumit Action Item: 30 Days"
+                                                    CTRL_1:"Action Item: 1 Days",
+                                                    CTRL_2:"Action Item: 2 Days",
+                                                    CTRL_3:"Action Item: 3 Days",
+                                                    CTRL_4:"Action Item: 7 Days",
+                                                    CTRL_5:"Action Item: 15 Days",
+                                                    CTRL_6:"Action Item: 30 Days",
+                                                    CTRL_SHIFT_1:"Sumit Action Item: 1 Days",
+                                                    CTRL_SHIFT_2:"Sumit Action Item: 2 Days",
+                                                    CTRL_SHIFT_3:"Sumit Action Item: 3 Days",
+                                                    CTRL_SHIFT_4:"Sumit Action Item: 7 Days",
+                                                    CTRL_SHIFT_5:"Sumit Action Item: 15 Days",
+                                                    CTRL_SHIFT_6:"Sumit Action Item: 30 Days"
                                                   },
                             { description: "Add shortcut as Key and what it types as the value (except for html-template)" }
     );
     var shortcuts = prefs.get("shortcuts");
 
-    function txt_with_position(txt,prefix,suffix, prefix_next_line, suffix_next_line) {
+    function txt_with_position(txt,prefix,suffix, prefix_next_line, suffix_next_line, target_cursor_pos) {
         var editor = EditorManager.getActiveEditor();
         if( editor ) {
             var doc = editor.document;
@@ -45,7 +51,14 @@ define(function (require, exports, module) {
             log("1");
             console.log(pos)
             var pos = cpos;
-            pos.ch = 0;
+            if (target_cursor_pos == undefined) {
+              pos.ch = 0; 
+            } else {
+              if (target_cursor_pos == "end") {
+                // Append text to end of current line
+                pos.ch = editor._codeMirror.getLine(pos.line).length + 2;
+              }
+            }
             if (prefix_next_line) {
               pos.line = pos.line + 1;
               editor.setCursorPos(pos.line,0);
@@ -106,23 +119,35 @@ define(function (require, exports, module) {
          switch(shortcut){
           case "CTRL_Z": 
              
-           txt_with_position("Attendees:\nCC:\n\nMeeting Notes: (Sumit DUE "+ get_date_string(1) + ")" + "\nDiscussed:\n\n",get_date_string(0) + "\n", "\n\nAction Items:\n",true, true);
+           txt_with_position("Attendees:\nCC:\n\nMeeting Notes: (Sumit DUE "+ get_date_string(1) + ")" + "\nDiscussed:\n\n",get_date_string(0) + "\n", "\n\nAction Items:\n\n\n\n",true, true);
            return;
           case "CTRL_N": 
            return txt_with_position("\t\t-[" +  get_date_string(0) + "]","","",true, true);
           case "CTRL_X": 
-           return txt_with_position("[Done-" +  get_date_string(0) + "]","","",false, false);
+           return txt_with_position("[Done-" +  get_date_string(0) + "]","","",false, false, "end");
           case "CTRL_1": 
-           return txt_with_position("\t* (DUE "+ get_date_string(7) + ")","", "",true, false);
+           return txt_with_position("\t* (DUE "+ get_date_string(1) + ")","", "",true, false);
           case "CTRL_2": 
-           return txt_with_position("\t* (DUE "+ get_date_string(15) + ")","",true, false);
+           return txt_with_position("\t* (DUE "+ get_date_string(2) + ")","",true, false);
           case "CTRL_3": 
+           return txt_with_position("\t* (DUE "+ get_date_string(3) + ")","", "",true, false);
+          case "CTRL_4": 
+           return txt_with_position("\t* (DUE "+ get_date_string(7) + ")","", "",true, false);
+          case "CTRL_5": 
+           return txt_with_position("\t* (DUE "+ get_date_string(15) + ")","", "",true, false);
+          case "CTRL_6": 
            return txt_with_position("\t* (DUE "+ get_date_string(30) + ")","", "",true, false);
           case "CTRL_SHIFT_1": 
-           return txt_with_position("\t* (Sumit DUE "+ get_date_string(7) + ")","","",false, false);
+           return txt_with_position("\t* (Sumit DUE "+ get_date_string(1) + ")","","",false, false);
           case "CTRL_SHIFT_2": 
-           return txt_with_position("\t* (Sumit DUE "+ get_date_string(15) + ")","","",false, false);
+           return txt_with_position("\t* (Sumit DUE "+ get_date_string(2) + ")","","",false, false);
           case "CTRL_SHIFT_3": 
+           return txt_with_position("\t* (Sumit DUE "+ get_date_string(3) + ")","","",false, false);
+          case "CTRL_SHIFT_4": 
+           return txt_with_position("\t* (Sumit DUE "+ get_date_string(7) + ")","","",false, false);
+          case "CTRL_SHIFT_5": 
+           return txt_with_position("\t* (Sumit DUE "+ get_date_string(15) + ")","","",false, false);
+          case "CTRL_SHIFT_6": 
            return txt_with_position("\t* (Sumit DUE "+ get_date_string(30) + ")","","",false, false);
        }      
     }
